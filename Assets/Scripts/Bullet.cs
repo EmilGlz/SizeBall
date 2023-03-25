@@ -58,7 +58,6 @@ public class Bullet : Ball
         {
             _isMoving = false;
             GameController.Instance.PlayVfx(other.transform.position);
-            //Destroy(other.gameObject);
             ObstacleSpawner.Instance.DestroyObstaclesByRadius(transform.position, currentDamageRadius, other.transform);
             Dispose();
         }

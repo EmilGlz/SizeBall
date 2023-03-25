@@ -73,6 +73,13 @@ public class Ball : MonoBehaviour, IDisposable
         if (currentLevel <= MinLevel)
             return;
         currentLevel--;
+        if (currentLevel == 0)
+        {
+            GameController.Instance.PlayVfx(transform.position);
+            GameController.Instance.LoseGame();
+            Dispose();
+            return;
+        }
         UpdateObjectScale();
     }
 

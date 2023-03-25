@@ -15,7 +15,8 @@ public class Player : Ball
         if (!CanGenerateBullet)
         {
             GameController.Instance.PlayVfx(transform.position);
-            OnTapFinished();
+            //OnTapFinished();
+            GameController.Instance.LoseGame();
             Dispose();
             return;
         }

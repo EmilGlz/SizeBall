@@ -79,7 +79,16 @@ public class GameController : MonoBehaviour
 
     public void WinGame()
     {
+        if (UIManager.Instance.DefeatScreenActive)
+            return;
         // show win screen UI
         UIManager.Instance.ShowWinScreen();
+    }
+    public void LoseGame()
+    {
+        if (UIManager.Instance.WinScreenActive)
+            return;
+        // show win screen UI
+        UIManager.Instance.ShowLoseScreen();
     }
 }
