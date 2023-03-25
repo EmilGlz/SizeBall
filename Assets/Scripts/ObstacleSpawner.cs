@@ -15,7 +15,7 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     private readonly float pathRadius = 3f;
     private readonly float startDelayDistance = 5f;
-    private readonly float spawnRatio = 0f;
+    private readonly float spawnRatio = 1f;
     private float EndDelayDistance => GameController.Instance.DoorWinDistance;
 
     [SerializeField] List<GameObject> obstacles;
