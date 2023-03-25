@@ -4,7 +4,7 @@ using UnityEngine;
 public class Bullet : Ball
 {
     [SerializeField] float speed;
-    protected override int startLevel { get => minLevel; }
+    protected override int startLevel { get => MinLevel; }
     private Transform _destination;
     private bool _isMoving;
 
@@ -16,8 +16,8 @@ public class Bullet : Ball
 
     private void SetDamageRadiuses()
     {
-        var difference = maxDamageRadius / (maxLevel - minLevel);
-        for (int i = minLevel; i <= maxLevel; i++)
+        var difference = maxDamageRadius / (MaxLevel - MinLevel);
+        for (int i = MinLevel; i <= MaxLevel; i++)
         {
             _levelDamageRadiuses[i] = minScale + i * difference;
         }
@@ -60,6 +60,11 @@ public class Bullet : Ball
             //Destroy(other.gameObject);
             ObstacleSpawner.Instance.DestroyObstaclesByRadius(transform.position, currentDamageRadius);
             Dispose();
+        }
+        else if (other.CompareTag("Door"))
+        {
+            GameController.Instance.door.OpenAnimation();
+            GameController.Instance.WinGame();
         }
     }
 }

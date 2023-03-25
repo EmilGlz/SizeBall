@@ -15,10 +15,19 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
-    [SerializeField] private Transform door;
+    public Door door;
     [SerializeField] private Player player;
     [SerializeField] private ParticleSystem explosionVFX;
-
+    public Action<int> OnLevelUpdated;
+    public float DoorWinDistance => 5f;
+    public Vector3 DestinationPos => door.transform.position;
+    public Vector3 StartPos => player.transform.position;
+    public int MaxPlayerLevel => 50;
+    public int MinPlayerLevel => 0;
+    public int CurrentLevel {
+        get => PlayerPrefs.GetInt("Level");
+        set => PlayerPrefs.SetInt("Level", value);
+    }
     private void Start()
     {
         ObstacleSpawner.Instance.SpawnObstacles();
@@ -47,6 +56,15 @@ public class GameController : MonoBehaviour
         action.Invoke();
     }
 
-    public Vector3 DestinationPos => door.position;
-    public Vector3 StartPos => player.transform.position;
+    public static async void DelayActionForOneFrame(Action action)
+    {
+        await Task.Yield();
+        action.Invoke();
+    }
+
+    public void WinGame()
+    {
+        // show win screen UI
+        UIManager.Instance.ShowWinScreen();
+    }
 }

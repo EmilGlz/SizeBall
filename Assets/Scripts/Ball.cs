@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour, IDisposable
 {
-    protected SphereCollider collider;
+    protected SphereCollider sphereCollider;
     protected Rigidbody rb;
-    protected int minLevel = 0;
-    protected int maxLevel = 50;
+    protected int MinLevel => GameController.Instance.MinPlayerLevel;
+    protected int MaxLevel => GameController.Instance.MaxPlayerLevel;
     protected float minScale = 0.3f;
     protected float maxScale = 3f;
     protected virtual int startLevel { get; set; }
@@ -20,12 +20,12 @@ public class Ball : MonoBehaviour, IDisposable
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<SphereCollider>();
+        sphereCollider = GetComponent<SphereCollider>();
     }
     private void SetScaleLevels()
     {
-        var difference = (maxScale - minScale) / (maxLevel - minLevel);
-        for (int i = minLevel; i <= maxLevel; i++)
+        var difference = (maxScale - minScale) / (MaxLevel - MinLevel);
+        for (int i = MinLevel; i <= MaxLevel; i++)
         {
             _levelScales[i] = minScale + i * difference;
             //Debug.Log($"[{i}] = {_levelScales[i]}");
@@ -53,7 +53,7 @@ public class Ball : MonoBehaviour, IDisposable
 
     protected void UpdateColliderRadius()
     {
-        collider.radius = sphereObject.localScale.x / 2f;
+        sphereCollider.radius = sphereObject.localScale.x / 2f;
     }
 
     protected virtual void OnPressLevelUpdate()
@@ -68,9 +68,9 @@ public class Ball : MonoBehaviour, IDisposable
     {
     }
 
-    public void DecreaseScaleByOne()
+    public void DecreaseLevel()
     {
-        if (currentLevel <= minLevel)
+        if (currentLevel <= MinLevel)
             return;
         currentLevel--;
         UpdateObjectScale();
@@ -78,7 +78,7 @@ public class Ball : MonoBehaviour, IDisposable
 
     public void IncreaseScaleByOne()
     {
-        if (currentLevel >= maxLevel)
+        if (currentLevel >= MaxLevel)
             return;
         currentLevel++;
         UpdateObjectScale();

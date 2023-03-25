@@ -8,18 +8,21 @@ public class Player : Ball
     [SerializeField] private GameObject bulletPrefab;
     [Space]
     [SerializeField] private Bullet _bullet;
-    bool CanGenerateBullet => currentLevel > minLevel;
-    protected override int startLevel { get => maxLevel; }
+    bool CanGenerateBullet => currentLevel > MinLevel;
+    protected override int startLevel { get => MaxLevel; }
 
     protected override void OnPressLevelUpdate()
     {
         if (!CanGenerateBullet)
         {
             GameController.Instance.PlayVfx(transform.position);
+            OnTapFinished();
             Dispose();
+            return;
         }
-        DecreaseScaleByOne();
+        DecreaseLevel();
         UpdateColliderRadius();
+        GameController.Instance.OnLevelUpdated?.Invoke(currentLevel);
     }
 
     protected override void OnTapStarted()

@@ -13,14 +13,17 @@ public class ObstacleSpawner : MonoBehaviour
     }
     #endregion
     [SerializeField] private GameObject obstaclePrefab;
-    [SerializeField] private float pathRadius = 3f;
+    private readonly float pathRadius = 3f;
+    private readonly float startDelayDistance = 5f;
+    private readonly float spawnRatio = 0f;
+    private float EndDelayDistance => GameController.Instance.DoorWinDistance;
 
     [SerializeField] List<GameObject> obstacles;
     public void SpawnObstacles()
     {
-        Vector3 destinationPos = GameController.Instance.DestinationPos;
-        Vector3 startPos = GameController.Instance.StartPos;
-        int rockCount = (int)(destinationPos - startPos).magnitude * 2;
+        Vector3 destinationPos = GameController.Instance.DestinationPos - (GameController.Instance.DestinationPos - GameController.Instance.StartPos).normalized * EndDelayDistance;
+        Vector3 startPos = GameController.Instance.StartPos - (GameController.Instance.StartPos - GameController.Instance.DestinationPos).normalized * startDelayDistance;
+        int rockCount = (int)((destinationPos - startPos).magnitude * spawnRatio);
         obstacles = new List<GameObject>(rockCount);
         for (int i = 0; i < rockCount; i++)
         {
