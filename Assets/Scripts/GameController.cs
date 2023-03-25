@@ -28,6 +28,21 @@ public class GameController : MonoBehaviour
         get => PlayerPrefs.GetInt("Level");
         set => PlayerPrefs.SetInt("Level", value);
     }
+    public float GetSpawnRatioByLevel()
+    {
+        var currentLevel = CurrentLevel;
+        return currentLevel switch
+        {
+            < 10 => 1f,
+            < 20 => 1.33f,
+            < 30 => 1.66f,
+            < 40 => 2f,
+            < 50 => 2.33f,
+            < 60 => 2.66f,
+            _ => 3f,
+        };
+    }
+
     private void Start()
     {
         ObstacleSpawner.Instance.SpawnObstacles();

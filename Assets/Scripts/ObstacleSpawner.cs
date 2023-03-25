@@ -15,7 +15,7 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     private readonly float pathRadius = 3f;
     private readonly float startDelayDistance = 5f;
-    private readonly float spawnRatio = 1f;
+    private float SpawnRatio => GameController.Instance.GetSpawnRatioByLevel();
     private float EndDelayDistance => GameController.Instance.DoorWinDistance;
 
     [SerializeField] List<GameObject> obstacles;
@@ -23,7 +23,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         Vector3 destinationPos = GameController.Instance.DestinationPos - (GameController.Instance.DestinationPos - GameController.Instance.StartPos).normalized * EndDelayDistance;
         Vector3 startPos = GameController.Instance.StartPos - (GameController.Instance.StartPos - GameController.Instance.DestinationPos).normalized * startDelayDistance;
-        int rockCount = (int)((destinationPos - startPos).magnitude * spawnRatio);
+        int rockCount = (int)((destinationPos - startPos).magnitude * SpawnRatio);
         obstacles = new List<GameObject>(rockCount);
         for (int i = 0; i < rockCount; i++)
         {
@@ -33,11 +33,11 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
 
-    public void DestroyObstaclesByRadius(Vector3 bulletPos, float radius)
+    public void DestroyObstaclesByRadius(Vector3 bulletPos, float radius, Transform obstacle)
     {
         for (int i = 0; i < obstacles.Count; i++)
         {
-            if (Vector3.Distance(bulletPos, obstacles[i].transform.position) < radius)
+            if (Vector3.Distance(bulletPos, obstacles[i].transform.position) < radius || obstacles[i].transform == obstacle)
             {
                 var obj = obstacles[i];
                 GameController.Instance.PlayVfx(obstacles[i].transform.position);

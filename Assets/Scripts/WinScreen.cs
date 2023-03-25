@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class WinScreen : ScreenView
@@ -13,6 +14,7 @@ public class WinScreen : ScreenView
         var animTime = showAnimation ? 0.5f : 0f;
         rectTransform.gameObject.SetActive(true);
         var title = GuiUtils.FindGameObject("Title", rectTransform.gameObject);
+        title.GetComponent<TMP_Text>().text = $"Level {GameController.Instance.CurrentLevel} passed!";
         var nextButton = GuiUtils.FindGameObject("NextButton", rectTransform.gameObject);
         GuiUtils.DoExtendAnimation(title, animTime);
         GuiUtils.DoExtendAnimation(nextButton, animTime);

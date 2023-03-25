@@ -10,7 +10,6 @@ public class Player : Ball
     [SerializeField] private Bullet _bullet;
     bool CanGenerateBullet => currentLevel > MinLevel;
     protected override int startLevel { get => MaxLevel; }
-
     protected override void OnPressLevelUpdate()
     {
         if (!CanGenerateBullet)
@@ -44,11 +43,8 @@ public class Player : Ball
     {
         if (_bullet == null)
             return;
-        // send bullet
-        GameController.DelayAction(() => { 
-            if(_bullet != null)
-                _bullet.StartMoving();
-            _bullet = null;
-        }, 500);
+        if (_bullet != null)
+            _bullet.StartMoving();
+        _bullet = null;
     }
 }

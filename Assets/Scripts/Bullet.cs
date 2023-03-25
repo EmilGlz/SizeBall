@@ -7,6 +7,7 @@ public class Bullet : Ball
     protected override int startLevel { get => MinLevel; }
     private Transform _destination;
     private bool _isMoving;
+    private bool _touchedGround = false;
 
     private readonly float maxDamageRadius = 10f;
     private readonly Dictionary<int, float> _levelDamageRadiuses = new Dictionary<int, float>()
@@ -44,7 +45,7 @@ public class Bullet : Ball
 
     private void Update()
     {
-        if (_isMoving)
+        if (_isMoving && _touchedGround)
         {
             var direction = (_destination.position - transform.position).normalized;
             rb.velocity = direction * speed;
@@ -58,13 +59,21 @@ public class Bullet : Ball
             _isMoving = false;
             GameController.Instance.PlayVfx(other.transform.position);
             //Destroy(other.gameObject);
-            ObstacleSpawner.Instance.DestroyObstaclesByRadius(transform.position, currentDamageRadius);
+            ObstacleSpawner.Instance.DestroyObstaclesByRadius(transform.position, currentDamageRadius, other.transform);
             Dispose();
         }
         else if (other.CompareTag("Door"))
         {
             GameController.Instance.door.OpenAnimation();
             GameController.Instance.WinGame();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _touchedGround = true;
         }
     }
 }
